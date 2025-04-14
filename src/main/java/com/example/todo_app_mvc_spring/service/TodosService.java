@@ -58,4 +58,11 @@ public class TodosService {
             todos.setPriority(todo.getPriority());
             return todos; 
         }
+
+        public void deleteTodo(Integer id) {
+            if(!repositoryTodosRepository.existsById(id)) {
+                throw new IllegalArgumentException("Todo not found with id: " + id);
+            }
+            repositoryTodosRepository.deleteById(id);    
+        }
 }

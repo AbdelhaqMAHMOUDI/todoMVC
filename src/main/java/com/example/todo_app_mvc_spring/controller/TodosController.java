@@ -1,9 +1,11 @@
 package com.example.todo_app_mvc_spring.controller;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,5 +42,17 @@ public class TodosController {
         return todosService.getTodoById(id)
                 .map( ResponseEntity::ok ) // 200 OK
                 .orElse(ResponseEntity.notFound().build()); // 404 Not Found
+    }
+
+    // La methode pour supprimer un todo
+    @DeleteMapping("/todos/delete/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Integer id) {
+        try{
+            todosService.deleteTodo(id);
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build(); // 404 Not Found
+        }
+        
     }
 }
